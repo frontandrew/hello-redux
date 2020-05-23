@@ -1,0 +1,1 @@
+{"version":3,"sources":["index.css"],"names":[],"mappings":"AAAA,MACE,YAAa,CACb,qBAAsB,CACtB,kBACF,CAEA,SACE,cACF","file":"main.640569fe.chunk.css","sourcesContent":[".root {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n}\r\n\r\n.counter {\r\n  font-size: 40px;\r\n}"]}
