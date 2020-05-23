@@ -17,6 +17,9 @@ const reduser = (state = 0, action) => {
     case 'INC':
       return state + 1;
 
+    case 'RND':
+      return state + action.payload;
+
     case 'DEC':
       return state - 1;
     /**Если action неизвестен, вернуть текущий state без изменений */
@@ -46,6 +49,18 @@ document
   .querySelector('.dec')
   .addEventListener('click', () => {
     store.dispatch({ type: 'DEC' })
+  })
+
+document
+  .querySelector('.rnd')
+  .addEventListener('click', () => {    
+    const value = Math.floor(Math.random()*10);
+    const payload = Math.floor(Math.random()*10) <= 4 ? -value : value;
+
+    /**Action в качестве дополнительных параметров может
+     * получать дополнительные поля обьекта.
+     */
+    store.dispatch({ type: 'RND', payload })
   })
 
 document
