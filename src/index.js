@@ -1,12 +1,16 @@
-import { createStore } from 'redux';
+import { createStore, bindActionCreators } from 'redux';
 
-import { inc, dec, rnd } from './modules/actions';
+import * as actions from './modules/actions';
 import reduser from './modules/reduser';
 
 console.log('Hello Redux');
 
 /**Инициализация store. Инициализирует state. */
 const store = createStore(reduser);
+const { dispatch } = store;
+
+/**Обернем actions и dispatch в отдельную функцию */
+const { inc, dec, rnd } = bindActionCreators(actions, dispatch)
 
 /**Subscribe выполняется после каждого изменения state */
 store.subscribe(() => {
@@ -19,9 +23,7 @@ store.subscribe(() => {
  */
 document
   .querySelector('.dec')
-  .addEventListener('click', () => {
-    store.dispatch(dec())
-  })
+  .addEventListener('click', () => dec());
 
 document
   .querySelector('.rnd')
@@ -32,14 +34,12 @@ document
     /**Action в качестве дополнительных параметров может
      * получать дополнительные поля обьекта.
      */
-    store.dispatch(rnd(payload))
-  })
+    rnd(payload);
+  });
 
 document
   .querySelector('.inc')
-  .addEventListener('click', () => {
-    store.dispatch(inc())
-  })
+  .addEventListener('click', () => inc());
 
 /**Update записывает значение state в ноду counter */
 const update = () => {
