@@ -1,37 +1,9 @@
 import { createStore } from 'redux';
 
+import { inc, dec, rnd } from './modules/actions';
+import reduser from './modules/reduser';
+
 console.log('Hello Redux');
-
-/**Reduser получает на вход состояние state и указание
- * как нужно это state изменить - action.
- * 
- * Reduser возвращает новый state.
- * 
- * Если state undefind нужно вернуть initialState, 
- * или state по умолчанию - в данном случае 0.
-*/
-const reduser = (state = 0, action) => {
-
-  /**В зависимости от аction reduser возвращает измененный state */
-  switch (action.type) {
-    case 'INC':
-      return state + 1;
-
-    case 'RND':
-      return state + action.payload;
-
-    case 'DEC':
-      return state - 1;
-    /**Если action неизвестен, вернуть текущий state без изменений */
-    default:
-      return state;
-  }
-};
-
-/**{ type: 'INC' } - это action - обычный JS обьект,
-* обязательно имеет поле type (тип действия, которое
-* нужно совершить над state)
-*/
 
 /**Инициализация store. Инициализирует state. */
 const store = createStore(reduser);
@@ -48,25 +20,25 @@ store.subscribe(() => {
 document
   .querySelector('.dec')
   .addEventListener('click', () => {
-    store.dispatch({ type: 'DEC' })
+    store.dispatch(dec())
   })
 
 document
   .querySelector('.rnd')
-  .addEventListener('click', () => {    
-    const value = Math.floor(Math.random()*10);
-    const payload = Math.floor(Math.random()*10) <= 4 ? -value : value;
+  .addEventListener('click', () => {
+    const value = Math.floor(Math.random() * 10);
+    const payload = Math.floor(Math.random() * 10) <= 4 ? -value : value;
 
     /**Action в качестве дополнительных параметров может
      * получать дополнительные поля обьекта.
      */
-    store.dispatch({ type: 'RND', payload })
+    store.dispatch(rnd(payload))
   })
 
 document
   .querySelector('.inc')
   .addEventListener('click', () => {
-    store.dispatch({ type: 'INC' })
+    store.dispatch(inc())
   })
 
 /**Update записывает значение state в ноду counter */
