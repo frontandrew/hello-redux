@@ -39,10 +39,30 @@ store.subscribe(() => {
 })
 
 /**Dispatch принимает action и передает его в Reduser
- * вместе со State. Reduser в зависимости от action изменяет state.
- * Таким образом Dispatch приводит к изменению state.
+ * вместе со текущим State. Reduser в зависимости от action
+ * изменяет state. Таким образом Dispatch приводит к изменению state.
  */
-store.dispatch({ type: 'INC' })
-store.dispatch({ type: 'INC' })
-store.dispatch({ type: 'INC' })
-store.dispatch({ type: 'DEC' })
+document
+  .querySelector('.dec')
+  .addEventListener('click', () => {
+    store.dispatch({ type: 'DEC' })
+  })
+
+document
+  .querySelector('.inc')
+  .addEventListener('click', () => {
+    store.dispatch({ type: 'INC' })
+  })
+
+/**Update записывает значение state в ноду counter */
+const update = () => {
+  document
+    .querySelector('.counter')
+    .textContent = store.getState();
+}
+
+/**Subscribe выполняется после каждого изменения state.
+ * Таким образом мы вызываем Update после каждого обновления state,
+ * перерендериваем сounter на странице
+ */
+store.subscribe(update);
