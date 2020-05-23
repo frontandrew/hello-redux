@@ -3,13 +3,15 @@ import { createStore, bindActionCreators } from 'redux';
 import * as actions from './modules/actions';
 import reduser from './modules/reduser';
 
+import './index.css';
+
 console.log('Hello Redux');
 
 /**Инициализация store. Инициализирует state. */
 const store = createStore(reduser);
 const { dispatch } = store;
 
-/**Обернем actions и dispatch в отдельную функцию */
+/**Обернем actions в dispatch при помощи bindActionCreators */
 const { inc, dec, rnd } = bindActionCreators(actions, dispatch)
 
 /**Subscribe выполняется после каждого изменения state */
