@@ -5,9 +5,17 @@
 * Создание action можно вынести в отдельную функцию.
 */
 export const inc = () => ({ type: 'INC' });
-export const rnd = (payload) => ({ type: 'RND', payload });
+export const rnd = () => {
+  const value = Math.floor(Math.random() * 10);
+  const payload = Math.floor(Math.random() * 10) <= 4 ? -value : value;
+
+  return {
+    type: 'RND',
+    payload: payload
+  }
+};
 export const dec = () => ({ type: 'DEC' });
 
 /**Action в качестве дополнительных параметров может
- * получать дополнительные поля обьекта.
+ * иметь дополнительные поля обьекта.
  */

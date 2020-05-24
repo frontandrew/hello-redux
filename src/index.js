@@ -1,20 +1,20 @@
-import { createStore, bindActionCreators } from 'redux';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import * as actions from './modules/actions';
 import reduser from './modules/reduser';
 
-import Counter from './components/counter/counter';
+import App from './components/app/app';
 
 console.log('Hello Redux');
 
 /**Инициализация store. Инициализирует state. */
 const store = createStore(reduser);
-const { dispatch } = store;
+// const { dispatch } = store;
 
 /**Обернем actions в dispatch при помощи bindActionCreators */
-const { inc, dec, rnd } = bindActionCreators(actions, dispatch)
+// const { inc, dec, rnd } = bindActionCreators(actions, dispatch)
 /**Dispatch принимает action и передает его в Reduser
  * вместе с текущим State. Reduser в зависимости от action
  * изменяет state. Таким образом Dispatch приводит к изменению state.
@@ -25,33 +25,41 @@ store.subscribe(() => {
   console.log(store.getState())
 })
 
-/**Update вызывает перерисовку ReactDOM, после каждого изменения state */
-const update = () => {
-  ReactDOM.render(
-    <Counter
-      inc={inc}
-      dec={dec}
-      rnd={() => {
-        const value = Math.floor(Math.random() * 10);
-        const payload = Math.floor(Math.random() * 10) <= 4 ? -value : value;
+/**Компонент Provider ('react-redux') передает store в <App /> как контекст,
+ * таким образом store можно получать на любом уровне в <App />.
+ * 
+ * Provider следит за обновлениями store(и state), и обноляет своих children
+ * автоматически. Поэтому функция update и subscribe больше не требуются 
+*/
 
-        /**Action в качестве дополнительных параметров может
-         * получать дополнительные поля обьекта.
-         */
-        rnd(payload);
-      }}
-      counter={store.getState()} />,
-    document.querySelector('.root')
-  );
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.querySelector('.root'));
+
+
+/** Теперь за обновление компонентов после изменения состояния
+ * следит компонент Provider.
+ *
+ * Update вызывает перерисовку ReactDOM, после каждого изменения state.
+ * 
+  const update = () => {
+  ReactDOM.render(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    document.querySelector('.root'));
 }
 
 /**В превый раз update() вызывается вручную, чтобы отрисовать ReactDOM
  * с первоначальным state
- */
+
 update();
 
 /**В дальнейшем ReactDOM будет обновляться при помощи subscribe, тк
- * Subscribe выполняется после каждого изменения state 
- */
+ * Subscribe выполняется после каждого изменения state
+
 store.subscribe(update);
 
+*/
