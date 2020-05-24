@@ -1,8 +1,11 @@
 import React from 'react';
 
+import './counter.css'
+
 const Counter = ({ counter, inc, dec, rnd }) => {
   return (
     <div className="counter jumbotron">
+      <span className="counter__tag">React+Redux</span>
       <h1 className="counter__title">Counter:</h1>
       <h2 className="counter__count">{counter}</h2>
       <div className="counter__controls btn-group">

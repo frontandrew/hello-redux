@@ -1,0 +1,8 @@
+@import url(./__count/counter__count.css);
+@import url(./__tag/counter__tag.css);
+
+.counter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

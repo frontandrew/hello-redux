@@ -5,9 +5,7 @@ import ReactDOM from 'react-dom';
 import * as actions from './modules/actions';
 import reduser from './modules/reduser';
 
-import './index.css';
-
-import Counter from './components/counter';
+import Counter from './components/counter/counter';
 
 console.log('Hello Redux');
 
