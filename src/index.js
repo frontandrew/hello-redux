@@ -1,57 +1,65 @@
-import { createStore, bindActionCreators } from 'redux';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-import * as actions from './modules/actions';
 import reduser from './modules/reduser';
 
-import './index.css';
+import App from './components/app/app';
 
 console.log('Hello Redux');
 
 /**Инициализация store. Инициализирует state. */
 const store = createStore(reduser);
-const { dispatch } = store;
+// const { dispatch } = store;
 
 /**Обернем actions в dispatch при помощи bindActionCreators */
-const { inc, dec, rnd } = bindActionCreators(actions, dispatch)
+// const { inc, dec, rnd } = bindActionCreators(actions, dispatch)
+/**Dispatch принимает action и передает его в Reduser
+ * вместе с текущим State. Reduser в зависимости от action
+ * изменяет state. Таким образом Dispatch приводит к изменению state.
+ */
 
 /**Subscribe выполняется после каждого изменения state */
 store.subscribe(() => {
   console.log(store.getState())
 })
 
-/**Dispatch принимает action и передает его в Reduser
- * вместе со текущим State. Reduser в зависимости от action
- * изменяет state. Таким образом Dispatch приводит к изменению state.
- */
-document
-  .querySelector('.dec')
-  .addEventListener('click', () => dec());
+/**Компонент Provider ('react-redux') передает store в <App /> как контекст,
+ * таким образом store можно получать на любом уровне в <App />.
+ * 
+ * Provider следит за обновлениями store(и state), и обноляет своих children
+ * автоматически. Поэтому функция update и subscribe больше не требуются 
+*/
 
-document
-  .querySelector('.rnd')
-  .addEventListener('click', () => {
-    const value = Math.floor(Math.random() * 10);
-    const payload = Math.floor(Math.random() * 10) <= 4 ? -value : value;
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.querySelector('.root'));
 
-    /**Action в качестве дополнительных параметров может
-     * получать дополнительные поля обьекта.
-     */
-    rnd(payload);
-  });
 
-document
-  .querySelector('.inc')
-  .addEventListener('click', () => inc());
-
-/**Update записывает значение state в ноду counter */
-const update = () => {
-  document
-    .querySelector('.counter')
-    .textContent = store.getState();
+/** Теперь за обновление компонентов после изменения состояния
+ * следит компонент Provider.
+ *
+ * Update вызывает перерисовку ReactDOM, после каждого изменения state.
+ * 
+  const update = () => {
+  ReactDOM.render(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    document.querySelector('.root'));
 }
 
-/**Subscribe выполняется после каждого изменения state.
- * Таким образом мы вызываем Update после каждого обновления state,
- * перерендериваем сounter на странице
- */
+/**В превый раз update() вызывается вручную, чтобы отрисовать ReactDOM
+ * с первоначальным state
+
+update();
+
+/**В дальнейшем ReactDOM будет обновляться при помощи subscribe, тк
+ * Subscribe выполняется после каждого изменения state
+
 store.subscribe(update);
+
+*/

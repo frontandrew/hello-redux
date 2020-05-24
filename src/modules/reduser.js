@@ -6,7 +6,7 @@
  * Если state undefind нужно вернуть initialState, 
  * или state по умолчанию - в данном случае 0.
 */
-const reduser = (state = 0, action) => {
+const reduser = (state = 69, action) => {
 
   /**В зависимости от аction reduser возвращает измененный state */
   switch (action.type) {
@@ -14,6 +14,9 @@ const reduser = (state = 0, action) => {
       return state + 1;
 
     case 'RND':
+      /**Обьект action может иметь в себе дополнительные значения, 
+       * кроме action.type, необходимые для действий со state.
+       */
       return state + action.payload;
 
     case 'DEC':
