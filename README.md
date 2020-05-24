@@ -43,6 +43,7 @@ Hi! And wellcome.
 <details>
     <summary>v0.0.3 It work with out React</summary>
     <li>Added main functional</li>
+    <li>Added styles</li>
 </details>
 
 <details>
