@@ -1,17 +1,43 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
-import * as actions from '../../modules/actions';
+// effector import
+import { createStore, createEvent } from 'effector';
+import { useStore } from 'effector-react';
 
 import './counter.css'
 
-const Counter = ({ counter, inc, dec, rnd }) => {
+// создаем события (некие аналоги actions из redux)
+const inc = createEvent('Increment');
+const dec = createEvent('Decrement');
+const rnd = createEvent('Randomize');
+const rst = createEvent('Reseter');
+
+
+const counter = createStore(0)
+  .on(inc, state => state + 1)
+  .on(dec, state => state - 1)
+  .on(rnd, state => {
+    const module = Math.random() > 0.5 ? 1 : -1;
+    const value = Math.round(Math.random() * 10 * module);
+    return state + value
+  })
+  .reset(rst)
+ 
+counter.watch(console.log)
+
+
+const Counter = () => {
+  const value = useStore(counter);
+
   return (
     <div className="counter jumbotron">
-      <span className="counter__tag badge badge-dark">React+Redux</span>
-      <h1 className="counter__title">Counter:</h1>
-      <h2 className="counter__count">{counter}</h2>
+      <span className="counter__tag badge badge-dark">React+Effector</span>
+      <h1
+        className="counter__title"
+        onClick={rst}>
+        Counter:
+      </h1>
+      <h2 className="counter__count">{value}</h2>
       <div className="counter__controls btn-group">
         <button
           onClick={dec}
@@ -33,28 +59,4 @@ const Counter = ({ counter, inc, dec, rnd }) => {
   );
 }
 
-/**mapStateToProps получает нужные параметры из state, для того
- * что бы в внутри функции connect передать их в качестве props
- * целевому react-компоненту (в данном случае <Counter />).
- */
-const mapStateToProps = (state) => {
-  return {
-    counter: state
-  }
-}
-
-/**mapDispatchToProps оборачивает actions в dispatch (который доступен
- * внутри функции connect), и предает их в таком виде в целевой компонент
- * в качестве props.
- * 
- */
-// const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
-
-/**Функция connect - компонент высшего порядка. Она имеет доступ
- * к store. При помощи connect компоненты ниже по иерархии могут
- * получать доступ к store, и через него к state.
- * 
- * Вместо mapDispathTOProps можно вторым аргументом передать обьект с
- * actions и функция connect сама обернет их в dispatch
- */
-export default connect(mapStateToProps, /* mapDispatchToProps */ actions)(Counter);
+export default Counter;

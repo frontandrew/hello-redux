@@ -1,5 +1,5 @@
-# Hello Redux
-## 0.1.0
+# Hello Redux (toEffector)
+## 0.2.1
 ---
   
 ### About:
@@ -20,8 +20,8 @@ Hi and wellcome!
 
 ### Use technology:
 
+- Effector;
 - React;
-- Redux;
 - ES 2019;
 - HTML5;
 - CSS3;
@@ -39,6 +39,12 @@ Hi and wellcome!
 4. Run `npm run start` to develop/debug project local. It will start webpack-dev-server on your local, port 3000.
 
 ### What's new:
+
+<details>
+    <summary>v0.2.1 Go to Effector</summary>
+    <li>Redux has been cut off</li>
+    <li>Effector is a new state manager</li>
+</details>
 
 <details>
     <summary>v0.1.0 React render and BEM magic</summary>
@@ -73,6 +79,7 @@ Hi and wellcome!
 ### This project was made possible by:
 
 * [React](https://reactjs.org);
+* [Effector](https://effector.now.sh);
 * [WebPack](https://webpack.js.org);
 * [Babel](https://babeljs.io);
 * [PostCSS](https://vk.com/postcss);
